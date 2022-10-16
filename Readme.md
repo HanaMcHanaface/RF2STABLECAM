@@ -21,8 +21,12 @@ First, find your rFactor2 install location. If installed with steam it will be i
 "Glance Rate": 500,
 ```
 
-Now we can actually install the plugin. Go back to the rFactor2 directory, but now go to `Bin64\Plugins`. Open up the zip file you downloaded earlier and move the file named `RF2STABLECAM64.dll` into the Plugins directory. Now open rFactor2 (restart if it was already running). After starting, go to settings and in the bottom right there's a plugin section. Make sure that `RF2STABLECAM64.dll` is on. Enable it if not, and restart the game.
+Now we can actually install the plugin. Go back to the rFactor2 folder, but now go to `Bin64\Plugins`. Open up the zip file you downloaded earlier and move the file named `RF2STABLECAM64.dll` into the Plugins folder. Now open rFactor2 (restart if it was already running). After starting, go to settings and in the bottom right there's a plugin section. Make sure that `RF2STABLECAM64.dll` is on. If it was off, turn it on and then restart the game.
 
-**IMPORTANT**: This plugin is not compatible with the TrackIR plugin that is included by default. If TrackIR is enabled then this plugin will have no effect. Unfortunately this means TrackIR equipment cannot be used in combination with this plugin.
+**IMPORTANT**: This plugin is not compatible with the TrackIR plugin that is included by default. Please disable it in the settings. If TrackIR is enabled then this plugin will have no effect. Unfortunately this means TrackIR equipment cannot be used in combination with this plugin.
 
 Please enjoy!!
+
+## Further Development
+
+If you want to use the source code to write your own plugin, that's fine. But please give credit to me. If you have any questions you can always contact me. The plugin was compiled using Visual Studio 2022 with the solution file `VC11\InternalsPlugin.sln`. Things are named weird because it's based on the "rFactor2 internals plugin" found [here](https://www.studio-397.com/modding-resources/).
