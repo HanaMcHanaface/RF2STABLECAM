@@ -20,14 +20,22 @@
 #include <math.h>               // for atan2, sqrt
 #include <stdio.h>              // for sample output
 #include <chrono>
+#include <string>
+#include <fstream>
 #include <sstream>
+#include <regex>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+
+using namespace std;
 
 using Eigen::Quaterniond;
 using Eigen::Vector3d;
 
 // plugin information
+
+void EditPlayerConfig();
+void EditPluginConfig();
 
 extern "C" __declspec(dllexport)
 const char* __cdecl GetPluginName() { return("RF2STABLECAM - 2022.10.16"); }
@@ -42,7 +50,14 @@ extern "C" __declspec(dllexport)
 PluginObject * __cdecl CreatePluginObject() { return((PluginObject*) new ExampleInternalsPlugin); }
 
 extern "C" __declspec(dllexport)
-void __cdecl DestroyPluginObject(PluginObject * obj) { delete((ExampleInternalsPlugin*)obj); }
+void __cdecl DestroyPluginObject(PluginObject * obj) {
+  delete((ExampleInternalsPlugin*)obj);
+
+  // Placing these here seems to work the best. 
+  // EditPluginConfig() wouldn't work anywhere else.
+  EditPlayerConfig();
+  EditPluginConfig();
+}
 
 // ExampleInternalsPlugin class
 
@@ -50,8 +65,54 @@ ExampleInternalsPlugin::ExampleInternalsPlugin() {
 
 }
 
-void ExampleInternalsPlugin::WriteToAllExampleOutputFiles(const char* const openStr, const char* const msg) {
-  return;
+void WriteToAllExampleOutputFiles(const char* const openStr, const char* const msg) {
+  //FILE* fo;
+
+  //fo = fopen("STABLECAM_Output.txt", openStr);
+  //if(fo != NULL) {
+  //  fprintf(fo, "%s\n", msg);
+  //  fclose(fo);
+  //}
+}
+
+void EditPlayerConfig() {
+  ostringstream text;
+  string fileName = "./UserData/player/player.JSON";
+  ifstream in_file(fileName);
+
+  text << in_file.rdbuf();
+
+  string str = regex_replace(text.str(), regex(R"("Glance Rate"[:0-9\s\.]+)"), R"("Glance Rate": 500)");
+  str = regex_replace(str, regex(R"("Stabilize Horizon"[:0-9\s\.]+)"), R"("Stabilize Horizon": 0)");
+  str = regex_replace(str, regex(R"("Look Up/Down Angle"[:0-9\s\.]+)"), R"("Look Up/Down Angle": 1)");
+  str = regex_replace(str, regex(R"("Look Roll Angle"[:0-9\s\.]+)"), R"("Look Roll Angle": 1)");
+
+  in_file.close();
+
+  ofstream out_file(fileName);
+  out_file << str;
+  out_file.close();
+}
+
+void EditPluginConfig() {
+  ostringstream text;
+  string fileName = "./UserData/player/CustomPluginVariables.JSON";
+  ifstream in_file(fileName);
+
+  text << in_file.rdbuf();
+
+  string str = regex_replace(text.str(),
+    regex(R"("TrackIR_rF2_Plugin\.dll"[\s:\{]+" Enabled"[:0-9\s\.]+)"),
+    R"("TrackIR_rF2_Plugin.dll":{
+    " Enabled":0
+  )"
+  );
+
+  in_file.close();
+
+  ofstream out_file(fileName);
+  out_file << str;
+  out_file.close();
 }
 
 void ExampleInternalsPlugin::Startup(long version) {
@@ -499,7 +560,7 @@ bool ExampleInternalsPlugin::ForceFeedback(double& forceValue) {
   // I think the bounds are -11500 to 11500 ...
 //  forceValue = 11500.0 * sinf( mET );
 //  return( true );
-}
+  }
 
 
 void ExampleInternalsPlugin::UpdateScoring(const ScoringInfoV01& info) {

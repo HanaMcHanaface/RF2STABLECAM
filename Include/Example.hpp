@@ -75,10 +75,8 @@ public:
 
   // COMMENTARY INPUT
   bool RequestCommentary(CommentaryRequestInfoV01& info);  // SEE FUNCTION BODY TO ENABLE COMMENTARY EXAMPLE
+
 private:
-
-  void WriteToAllExampleOutputFiles(const char* const openStr, const char* const msg);
-
   bool helperSetHWControl(
     const char* const controlName, double& fRetVal,
     const char* const negativeCompareName, const char* const positiveCompareName,
