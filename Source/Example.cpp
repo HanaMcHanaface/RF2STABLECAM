@@ -75,6 +75,46 @@ void WriteToAllExampleOutputFiles(const char* const openStr, const char* const m
   //}
 }
 
+void WriteToLog(string msg) {
+  FILE* fo;
+
+  const char* const message = msg.c_str();
+
+  fo = fopen("STABLECAM_LOG.txt", "a");
+  if(fo != NULL) {
+    fprintf(fo, "%s\n", message);
+    fclose(fo);
+  }
+}
+
+bool EditConfigStr(string& source, bool& didChange, string regexStr, string numberNoChangeStr, string replaceStr) {
+  regex rgx(regexStr);
+  smatch result;
+
+  const string& matchStr = source;
+
+  if(!regex_search(matchStr.begin(), matchStr.end(), result, rgx)) {
+    return(false);
+  }
+
+  const string& resultStr = result.str();
+  const string& resultNoWhitespaceStr = regex_replace(resultStr, regex(R"(\s+)"), "");
+  smatch numberMatch;
+
+  if(!regex_search(resultNoWhitespaceStr.begin(), resultNoWhitespaceStr.end(), numberMatch, regex(R"([0-9\s]+$)"))) {
+    return(false);
+  }
+
+  if(numberMatch.str() == numberNoChangeStr) {
+    return(false);
+  }
+
+  WriteToLog("## Replacing config: \n" + resultStr + "\n## With: \n" + replaceStr + "\n## End of replace.");
+  source = regex_replace(source, rgx, replaceStr);
+  didChange = true;
+  return(true);
+}
+
 void EditPlayerConfig() {
   ostringstream text;
   string fileName = "./UserData/player/player.JSON";
@@ -82,16 +122,24 @@ void EditPlayerConfig() {
 
   text << in_file.rdbuf();
 
-  string str = regex_replace(text.str(), regex(R"("Glance Rate"[:0-9\s\.]+)"), R"("Glance Rate": 500)");
-  str = regex_replace(str, regex(R"("Stabilize Horizon"[:0-9\s\.]+)"), R"("Stabilize Horizon": 0)");
-  str = regex_replace(str, regex(R"("Look Up/Down Angle"[:0-9\s\.]+)"), R"("Look Up/Down Angle": 1)");
-  str = regex_replace(str, regex(R"("Look Roll Angle"[:0-9\s\.]+)"), R"("Look Roll Angle": 1)");
+  string startString = text.str();
+  string endString = startString;
+  bool didChange = false;
+
+  EditConfigStr(endString, didChange, R"("Glance Rate"[:0-9\s\.]+)", "500", R"("Glance Rate":500)");
+  EditConfigStr(endString, didChange, R"("Stabilize Horizon"[:0-9\s\.]+)", "0", R"("Stabilize Horizon":0)");
+  EditConfigStr(endString, didChange, R"("Look Up/Down Angle"[:0-9\s\.]+)", "1", R"("Look Up/Down Angle":1)");
+  EditConfigStr(endString, didChange, R"("Look Roll Angle"[:0-9\s\.]+)", "1", R"("Look Roll Angle":1)");
 
   in_file.close();
 
+  if(!didChange) { return; }
+
+  WriteToLog("## Writing player.JSON file");
   ofstream out_file(fileName);
-  out_file << str;
+  out_file << endString;
   out_file.close();
+  WriteToLog("## Finished writing player.JSON file");
 }
 
 void EditPluginConfig() {
@@ -101,8 +149,13 @@ void EditPluginConfig() {
 
   text << in_file.rdbuf();
 
-  string str = regex_replace(text.str(),
-    regex(R"("TrackIR_rF2_Plugin\.dll"[\s:\{]+" Enabled"[:0-9\s\.]+)"),
+  string startString = text.str();
+  string endString = startString;
+  bool didChange = false;
+
+  EditConfigStr(endString, didChange,
+    R"("TrackIR_rF2_Plugin\.dll"[\s:\{]+" Enabled"[:0-9\s\.]+)",
+    "0",
     R"("TrackIR_rF2_Plugin.dll":{
     " Enabled":0
   )"
@@ -110,9 +163,13 @@ void EditPluginConfig() {
 
   in_file.close();
 
+  if(!didChange) { return; }
+
+  WriteToLog("## Writing CustomPluginVariables.JSON file");
   ofstream out_file(fileName);
-  out_file << str;
+  out_file << endString;
   out_file.close();
+  WriteToLog("## Finished writing CustomPluginVariables.JSON file");
 }
 
 void ExampleInternalsPlugin::Startup(long version) {
@@ -560,7 +617,7 @@ bool ExampleInternalsPlugin::ForceFeedback(double& forceValue) {
   // I think the bounds are -11500 to 11500 ...
 //  forceValue = 11500.0 * sinf( mET );
 //  return( true );
-  }
+}
 
 
 void ExampleInternalsPlugin::UpdateScoring(const ScoringInfoV01& info) {
