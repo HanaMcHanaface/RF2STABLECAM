@@ -1,7 +1,7 @@
 
 # RF2STABLECAM
 
-This is a plugin for rFactor2 that stabilizes your camera, creating a much more natural & comfortable feel when driving. It doesn't add any fancy g-force effects or anything like that. It just makes the camera real *smooooooth*.
+This is a plugin for rFactor2 that stabilizes your cockpit/hood camera, creating a much more natural & comfortable feel when driving. It doesn't add any fancy g-force effects or anything like that. It just makes the camera real *smooooooth*.
 
 ## Support
 
@@ -9,23 +9,27 @@ If you like this plugin, please consider checking out my [twitch channel](https:
 
 ## Installation
 
-Please download the latest zip file here: [Latest Download](https://github.com/HanaMcHanaface/RF2STABLECAM/releases/download/v1.0/RF2STABLECAM64.zip).
+Download the latest version here: [Latest Download](https://github.com/HanaMcHanaface/RF2STABLECAM/releases/download/V1.2/RF2STABLECAM64.V1.2.zip).
 
-**IMPORTANT**: Before we install the plugin we have to change some settings in our player config. I wish this wasn't the case, but this is rFactor2 we're talking about. :D
+**IMPORTANT**: After installing the plugin you have to start and then close rFactor2 once. The plugin will change your player settings. It might be a good idea to back them up.
 
-First, find your rFactor2 install location. If installed with steam it will be in `C:\Program Files (x86)\Steam\steamapps\common\rFactor 2`. Now, inside that folder go to `UserData\player`. Here you will find a file named `player.JSON`, open it in notepad. Now you have to find the following lines, and replace the values so they look the same. Using the search tool might be useful!
+This plugin is installed like any other, I will describe it here. First, find your rFactor2 install location and plugin folder. If installed with steam it will be in `C:\Program Files (x86)\Steam\steamapps\common\rFactor 2\Bin64\Plugins`. In the ZIP file you will find a file named `RF2STABLECAM64.dll`, move this file to the Plugins folder.
 
-```json
-"Look Roll Angle": 1,
-"Look Up/Down Angle": 1,
-"Glance Rate": 500,
-```
+Now start rFactor2 and go to the settings. In the bottom right you will find the "PLUGINS" section. Make sure that `RF2STABLECAM.dll` is turned on. Now close rFactor2. This is necessary because the plugin has to edit your player settings, which can only be done when closing rFactor2.
 
-Now we can actually install the plugin. Go back to the rFactor2 folder, but now go to `Bin64\Plugins`. Open up the zip file you downloaded earlier and move the file named `RF2STABLECAM64.dll` into the Plugins folder. Now open rFactor2 (restart if it was already running). After starting, go to settings and in the bottom right there's a plugin section. Make sure that `RF2STABLECAM64.dll` is on. If it was off, turn it on and then restart the game.
+If you have other camera plugins they might interfere with this plugin. The plugin is only active when you are driving the car and the camera is a "driving" camera (switch driving camera with the `insert` key by default). Plugins that alter the camera in other views than driving views should be compatible with this plugin.
 
-**IMPORTANT**: This plugin is not compatible with the TrackIR plugin that is included by default. Please disable it in the settings. If TrackIR is enabled then this plugin will have no effect. Unfortunately this means TrackIR equipment cannot be used in combination with this plugin.
+**IMPORTANT**: This plugin is not compatible with the TrackIR plugin that is included by default. The plugin is automatically disabled when you close rFactor2. This means use of any TrackIR gear is not possible when using this plugin.
 
 Please enjoy!!
+
+## Uninstall
+
+To uninstall simply remove the dll from the Plugins folder. As mentioned, This plugin will alter your player settings. The settings that changed are documented in a file called `STABLECAM_LOG.txt` in your rFactor2 folder.
+
+## Issues
+
+If you have any issues feel free to contact me using any method you prefer. (github, [twitch](https://www.twitch.tv/helloimhana), [twitter](https://twitter.com/HanaMcHanaface) and so on)
 
 ## Further Development
 
