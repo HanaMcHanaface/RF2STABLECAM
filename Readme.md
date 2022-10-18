@@ -15,7 +15,7 @@ Download the latest version here: [Latest Download](https://github.com/HanaMcHan
 
 This plugin is installed like any other, I will describe it here. First, find your rFactor2 install location and plugin folder. If installed with steam it will be in `C:\Program Files (x86)\Steam\steamapps\common\rFactor 2\Bin64\Plugins`. In the ZIP file you will find a file named `RF2STABLECAM64.dll`, move this file to the Plugins folder.
 
-Now start rFactor2 and go to the settings. In the bottom right you will find the "PLUGINS" section. Make sure that `RF2STABLECAM.dll` is turned on. Now close rFactor2. This is necessary because the plugin has to edit your player settings, which can only be done when closing rFactor2.
+Now start rFactor2 and go to the settings. In the bottom right you will find the "PLUGINS" section. Make sure that `RF2STABLECAM.dll` is turned on. If the plugin was already on, restart rFactor2. If the plugin was not enabled, you have to restart rFactor2 twice! (enable plugin, restart - plugin now active, then restart again). This is necessary because the plugin has to edit your player settings, which can only be done when closing rFactor2.
 
 If you have other camera plugins they might interfere with this plugin. The plugin is only active when you are driving the car and the camera is a "driving" camera (switch driving camera with the `insert` key by default). Plugins that alter the camera in other views than driving views should be compatible with this plugin.
 
