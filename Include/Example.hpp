@@ -90,13 +90,6 @@ private:
   bool mHardwareEnabled = true;
   long mCameraType = -1;
 
-  //double mCurrentPitch;
-  //double mCurrentRoll;
-  //double mCurrentYaw;
-  //TelemVect3 mCurrentPos;
-  TelemVect3 mTestPos;
-  int mTestPosInc = 0;
-
   double mCamPitch = 0.0;
   double mCamRoll = 0.0;
   double mCamYaw = 0.0;
@@ -107,16 +100,8 @@ private:
 
   TimedMovingAverage mAveragePitch;
   TimedMovingAverage mAverageRoll;
-  TimedMovingAverage mAverageX;
-  TimedMovingAverage mAverageY;
-  TimedMovingAverage mAverageX2;
-  TimedMovingAverage mAverageY2;
 
-  TimedVector3Average mAverageGlobalPos1;
-  TimedVector3Average mAverageGlobalPos2;
-  TimedVector3Average mAverageGlobalPos3;
-
-  TimeDiffer mTelemetryDiff;
+  TimedMovingAverage mAverageYAccel;
 };
 
 #endif // _INTERNALS_EXAMPLE_H

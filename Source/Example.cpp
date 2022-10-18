@@ -197,13 +197,6 @@ void ExampleInternalsPlugin::EnterRealtime() {
   // start up timer every time we enter realtime
   WriteToAllExampleOutputFiles("a", "---ENTERREALTIME---");
 
-  mTestPosInc = 500;
-
-  //mCurrentPitch = 0.0;
-  //mCurrentRoll = 0.0;
-  //mCurrentPos = TelemVect3();
-  mTestPos = TelemVect3();
-
   mCamPitch = 0.0;
   mCamRoll = 0.0;
   mCamYaw = 0.0;
@@ -214,14 +207,6 @@ void ExampleInternalsPlugin::EnterRealtime() {
 
   mAveragePitch.reset();
   mAverageRoll.reset();
-  mAverageX.reset();
-  mAverageY.reset();
-  mAverageX2.reset();
-  mAverageY2.reset();
-
-  mAverageGlobalPos1.reset();
-  mAverageGlobalPos2.reset();
-  mAverageGlobalPos3.reset();
 
   mDisableSequenceIndex = -1;
 
@@ -261,55 +246,13 @@ void ExampleInternalsPlugin::UpdateTelemetry(const TelemInfoV01& telemetry) {
   pitch = -carPitch;
   //yaw = -carYaw;
 
-  //pitch += atan2(-carY, 500.0);
-
   double averageRoll = mAverageRoll.GetAverage(carRoll, 0.2);
   double averagePitch = mAveragePitch.GetAverage(carPitch, 0.2);
 
   roll += averageRoll;
   pitch += averagePitch;
 
-  TelemQuat quat;
-  quat.ConvertMatToQuat(telemetry.mOri);
-
-  Quaterniond q = Quaterniond(quat.w, quat.x, quat.y, quat.z);
-
-  Vector3d carGlobalPosE = carGlobalPos.ToEigen();
-
-  // Test code
-  //if(mTestPosInc >= 499) {
-  //  mTestPos = carGlobalPos;
-  //}
-  //mTestPosInc = (mTestPosInc + 1) % 500;
-
-  //Vector3d globalTranslation = mTestPos.ToEigen() - carGlobalPos.ToEigen();
-  //Vector3d result = (q.conjugate() * -globalTranslation) * 6.595;
-  //x = result.x();
-  //y = -result.y();
-  //z = result.z();
-  // End Test Code
-
-  //Vector3d smoothGlobalPos1 = mAverageGlobalPos1.GetAverage(carGlobalPosE, 0.015);
-  //Vector3d globalTranslation1 = smoothGlobalPos1 - carGlobalPosE;
-  //double resultX = (q.conjugate() * globalTranslation1).x();
-
-  Vector3d smoothGlobalPos2 = mAverageGlobalPos2.GetAverage(carGlobalPosE, 0.15); //0.08);
-  Vector3d globalTranslation2 = smoothGlobalPos2 - carGlobalPosE;
-  double resultY = (q.conjugate() * -globalTranslation2).y();
-
-  //Vector3d smoothGlobalPos3 = mAverageGlobalPos3.GetAverage(carGlobalPosE, 0.05);
-  //Vector3d globalTranslation3 = smoothGlobalPos3 - carGlobalPosE;
-  //double resultZ = (q.conjugate() * globalTranslation3).z();
-
-  // Magic value to make the translation into global meters.
-  //double multTranslation = 6.595;
-
-  // But from experimentation this works better.
-  double multTranslation = 2.5;
-
-  //x = resultX * multTranslation;
-  y = -resultY * multTranslation;
-  //z = resultVec.z();
+  y = mAverageYAccel.GetAverage(telemetry.mLocalAccel.y, 0.05) * 0.017;
 
   mCamX = x;
   mCamY = y;
