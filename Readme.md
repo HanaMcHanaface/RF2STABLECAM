@@ -9,7 +9,7 @@ If you like this plugin, please consider checking out my [twitch channel](https:
 
 ## Installation
 
-Download the latest version here: [Latest Download](https://github.com/HanaMcHanaface/RF2STABLECAM/releases/download/V1.2/RF2STABLECAM64.V1.2.zip).
+Download the latest version here: [Latest Download](https://github.com/HanaMcHanaface/RF2STABLECAM/releases/download/V1.3/RF2STABLECAM64.V1.3.zip).
 
 **IMPORTANT**: After installing the plugin you have to start and then close rFactor2 once. The plugin will change your player settings. It might be a good idea to back them up.
 
