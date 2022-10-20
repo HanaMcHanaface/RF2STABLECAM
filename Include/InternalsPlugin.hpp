@@ -21,10 +21,6 @@
 #include <cmath>                 // for sqrt()
 #include <windows.h>             // for HWND
 
-#include <Eigen/Core>
-
-using Eigen::Vector3d;
-
 // rF and plugins must agree on structure packing, so set it explicitly here ... whatever the current
 // packing is will be restored at the end of this include with another #pragma.
 #pragma pack( push, 4 )
@@ -47,10 +43,6 @@ struct TelemVect3 {
 
   }
 
-  TelemVect3(Vector3d eigenVec) {
-    Set(eigenVec.x(), eigenVec.y(), eigenVec.z());
-  }
-
   void Set(const double a, const double b, const double c) { x = a; y = b; z = c; }
 
   TelemVect3 Inverse() {
@@ -63,10 +55,6 @@ struct TelemVect3 {
     TelemVect3 clone;
     clone.Set(x, y, z);
     return(clone);
-  }
-
-  Vector3d ToEigen() {
-    return(Vector3d(x, y, z));
   }
 
   // Allowed to reference as [0], [1], or [2], instead of .x, .y, or .z, respectively

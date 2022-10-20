@@ -19,14 +19,9 @@
 #ifndef _INTERNALS_EXAMPLE_H
 #define _INTERNALS_EXAMPLE_H
 
-#include <Eigen/Core>
-
 #include "InternalsPlugin.hpp"
 #include "TimedMovingAverage.hpp"
 #include "TimeDiffer.hpp"
-#include "TimedVector3Average.hpp"
-
-using Eigen::Vector3d;
 
 // This is used for the app to use the plugin for its intended purpose
 class ExampleInternalsPlugin : public InternalsPluginV07  // REMINDER: exported function GetPluginVersion() should return 1 if you are deriving from this InternalsPluginV01, 2 for InternalsPluginV02, etc.

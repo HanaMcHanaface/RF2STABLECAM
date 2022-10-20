@@ -24,13 +24,8 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
-#include <Eigen/Core>
-#include <Eigen/Geometry>
 
 using namespace std;
-
-using Eigen::Quaterniond;
-using Eigen::Vector3d;
 
 // plugin information
 

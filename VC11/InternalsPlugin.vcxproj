@@ -280,7 +280,6 @@
     <ClInclude Include="..\Include\PluginObjects.hpp" />
     <ClInclude Include="..\Include\TimeDiffer.hpp" />
     <ClInclude Include="..\Include\TimedMovingAverage.hpp" />
-    <ClInclude Include="..\Include\TimedVector3Average.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
