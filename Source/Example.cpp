@@ -25,15 +25,14 @@
 #include <sstream>
 #include <regex>
 
+#include "EditConfig.hpp"
+
 using namespace std;
 
 // plugin information
 
-void EditPlayerConfig();
-void EditPluginConfig();
-
 extern "C" __declspec(dllexport)
-const char* __cdecl GetPluginName() { return("RF2STABLECAM - 2022.10.16"); }
+const char* __cdecl GetPluginName() { return("RF2STABLECAM - 2022.10.20"); }
 
 extern "C" __declspec(dllexport)
 PluginObjectType __cdecl GetPluginType() { return(PO_INTERNALS); }
@@ -68,103 +67,6 @@ void WriteToAllExampleOutputFiles(const char* const openStr, const char* const m
   //  fprintf(fo, "%s\n", msg);
   //  fclose(fo);
   //}
-}
-
-void WriteToLog(string msg) {
-  FILE* fo;
-
-  const char* const message = msg.c_str();
-
-  fo = fopen("STABLECAM_LOG.txt", "a");
-  if(fo != NULL) {
-    fprintf(fo, "%s\n", message);
-    fclose(fo);
-  }
-}
-
-bool EditConfigStr(string& source, bool& didChange, string regexStr, string numberNoChangeStr, string replaceStr) {
-  regex rgx(regexStr);
-  smatch result;
-
-  const string& matchStr = source;
-
-  if(!regex_search(matchStr.begin(), matchStr.end(), result, rgx)) {
-    return(false);
-  }
-
-  const string& resultStr = result.str();
-  const string& resultNoWhitespaceStr = regex_replace(resultStr, regex(R"(\s+)"), "");
-  smatch numberMatch;
-
-  if(!regex_search(resultNoWhitespaceStr.begin(), resultNoWhitespaceStr.end(), numberMatch, regex(R"([0-9\s]+$)"))) {
-    return(false);
-  }
-
-  if(numberMatch.str() == numberNoChangeStr) {
-    return(false);
-  }
-
-  WriteToLog("## Replacing config: \n" + resultStr + "\n## With: \n" + replaceStr + "\n## End of replace.");
-  source = regex_replace(source, rgx, replaceStr);
-  didChange = true;
-  return(true);
-}
-
-void EditPlayerConfig() {
-  ostringstream text;
-  string fileName = "./UserData/player/player.JSON";
-  ifstream in_file(fileName);
-
-  text << in_file.rdbuf();
-
-  string startString = text.str();
-  string endString = startString;
-  bool didChange = false;
-
-  EditConfigStr(endString, didChange, R"("Glance Rate"[:0-9\s\.]+)", "500", R"("Glance Rate":500)");
-  EditConfigStr(endString, didChange, R"("Stabilize Horizon"[:0-9\s\.]+)", "0", R"("Stabilize Horizon":0)");
-  EditConfigStr(endString, didChange, R"("Look Up/Down Angle"[:0-9\s\.]+)", "1", R"("Look Up/Down Angle":1)");
-  EditConfigStr(endString, didChange, R"("Look Roll Angle"[:0-9\s\.]+)", "1", R"("Look Roll Angle":1)");
-
-  in_file.close();
-
-  if(!didChange) { return; }
-
-  WriteToLog("## Writing player.JSON file");
-  ofstream out_file(fileName);
-  out_file << endString;
-  out_file.close();
-  WriteToLog("## Finished writing player.JSON file");
-}
-
-void EditPluginConfig() {
-  ostringstream text;
-  string fileName = "./UserData/player/CustomPluginVariables.JSON";
-  ifstream in_file(fileName);
-
-  text << in_file.rdbuf();
-
-  string startString = text.str();
-  string endString = startString;
-  bool didChange = false;
-
-  EditConfigStr(endString, didChange,
-    R"("TrackIR_rF2_Plugin\.dll"[\s:\{]+" Enabled"[:0-9\s\.]+)",
-    "0",
-    R"("TrackIR_rF2_Plugin.dll":{
-    " Enabled":0
-  )"
-  );
-
-  in_file.close();
-
-  if(!didChange) { return; }
-
-  WriteToLog("## Writing CustomPluginVariables.JSON file");
-  ofstream out_file(fileName);
-  out_file << endString;
-  out_file.close();
-  WriteToLog("## Finished writing CustomPluginVariables.JSON file");
 }
 
 void ExampleInternalsPlugin::Startup(long version) {
@@ -341,28 +243,11 @@ bool ExampleInternalsPlugin::CheckHWControl(const char* const controlName, doubl
 
 bool ExampleInternalsPlugin::ForceFeedback(double& forceValue) {
   return(false);
-  // Note that incoming value is the game's computation, in case you're interested.
-#if 0 // enable to log it out (note that this is a very very slow implementation)
-  FILE* fo = fopen("FFB.txt", "a");
-  if(fo != NULL) {
-    fprintf(fo, "\nFFB=%.4f", forceValue);
-    fclose(fo);
-  }
-#endif
-
-  // CHANGE COMMENTS TO ENABLE FORCE EXAMPLE
-  return(false);
-
-  // I think the bounds are -11500 to 11500 ...
-//  forceValue = 11500.0 * sinf( mET );
-//  return( true );
 }
-
 
 void ExampleInternalsPlugin::UpdateScoring(const ScoringInfoV01& info) {
   return;
 }
-
 
 bool ExampleInternalsPlugin::RequestCommentary(CommentaryRequestInfoV01& info) {
   return(false);

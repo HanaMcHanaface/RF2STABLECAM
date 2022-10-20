@@ -25,7 +25,7 @@ Please enjoy!!
 
 ## Uninstall
 
-To uninstall simply remove the dll from the Plugins folder. As mentioned, This plugin will alter your player settings. The settings that changed are documented in a file called `STABLECAM_LOG.txt` in your rFactor2 folder.
+To uninstall simply remove the dll from the Plugins folder. As mentioned, This plugin will alter your player settings. The settings that changed are documented in a file called `RF2STABLECAM_LOG.txt` in your rFactor2 folder.
 
 ## Issues
 

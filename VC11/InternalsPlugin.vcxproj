@@ -275,8 +275,10 @@
     <ClCompile Include="..\Source\TimedMovingAverage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\EditConfig.hpp" />
     <ClInclude Include="..\Include\Example.hpp" />
     <ClInclude Include="..\Include\InternalsPlugin.hpp" />
+    <ClInclude Include="..\Include\Log.hpp" />
     <ClInclude Include="..\Include\PluginObjects.hpp" />
     <ClInclude Include="..\Include\TimeDiffer.hpp" />
     <ClInclude Include="..\Include\TimedMovingAverage.hpp" />
